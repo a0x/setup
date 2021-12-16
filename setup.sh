@@ -2,7 +2,7 @@
 # This script setups dockerized Redash on Ubuntu 18.04.
 set -eu
 
-REDASH_BASE_PATH=/opt/redash
+REDASH_BASE_PATH=/data/opt/redash
 
 install_docker(){
     # Install Docker
@@ -23,10 +23,10 @@ install_docker(){
 }
 
 create_directories() {
-    if [[ ! -e $REDASH_BASE_PATH ]]; then
-        sudo mkdir -p $REDASH_BASE_PATH
-        sudo chown $USER:$USER $REDASH_BASE_PATH
-    fi
+    # if [[ ! -e $REDASH_BASE_PATH ]]; then
+    #     mkdir -p $REDASH_BASE_PATH
+    #     chown $USER:$USER $REDASH_BASE_PATH
+    # fi
 
     if [[ ! -e $REDASH_BASE_PATH/postgres-data ]]; then
         mkdir $REDASH_BASE_PATH/postgres-data
@@ -65,11 +65,11 @@ setup_compose() {
     echo "export COMPOSE_FILE=/opt/redash/docker-compose.yml" >> ~/.profile
     export COMPOSE_PROJECT_NAME=redash
     export COMPOSE_FILE=/opt/redash/docker-compose.yml
-    sudo docker-compose run --rm server create_db
-    sudo docker-compose up -d
+    docker-compose run --rm server create_db
+    docker-compose up -d
 }
 
-install_docker
+# install_docker
 create_directories
 create_config
 setup_compose
